@@ -30,8 +30,23 @@ class Generator(object):
         templates = [f for f in listdir(self.templates_path) if isfile(join(self.templates_path, f))]
         for model_name in self.get_model_names():
             for template_name in templates:
-                open("../out/%s%s.java" % (model_name, template_name.split(".")[-2]), "w").write(
-                    self.render_template(model_name, template_name))
+                if "Dao" in template_name:
+                    self.make_dir("../out/dao/%s/" % model_name.lower())
+                    open("../out/dao/%s/%s%s.java" % (model_name.lower(), model_name, template_name.split(".")[-2]), "w").write(
+                        self.render_template(model_name, template_name))
+                elif "Service" in template_name:
+                    self.make_dir("../out/service/%s/" % model_name.lower())
+                    open("../out/service/%s/%s%s.java" % (model_name.lower(), model_name, template_name.split(".")[-2]), "w").write(
+                        self.render_template(model_name, template_name))
+                elif "Controller" in template_name:
+                    self.make_dir("../out/controller/%s/" % model_name.lower())
+                    open("../out/controller/%s/%s%s.java" % (model_name.lower(), model_name, template_name.split(".")[-2]), "w").write(
+                        self.render_template(model_name, template_name))
+
+    def make_dir(self, directory):
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
 
 
 if __name__ == "__main__":
