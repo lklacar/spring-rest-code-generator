@@ -1,6 +1,9 @@
 import glob
 import os
+from dircache import listdir
+
 from jinja2 import Template
+from os.path import isfile, join
 
 
 class Generator(object):
@@ -10,8 +13,6 @@ class Generator(object):
         self.service_package_path = service_package_path
         self.templates_path = templates_path
 
-        print self.generate_dao_interface("Employee")
-
     def get_model_names(self):
         models = []
         for model_path in self.get_model_paths():
@@ -19,12 +20,18 @@ class Generator(object):
         return models
 
     def get_model_paths(self):
-        print os.path.join(self.model_package_path, "*.java")
         return glob.glob(os.path.join(self.model_package_path, "*.java"))
 
-    def generate_dao_interface(self, model_name):
-        t = Template(open(os.path.join(self.templates_path, "DaoTemplate.jinja2"), "r").read())
+    def render_template(self, model_name, template_name):
+        t = Template(open(os.path.join(self.templates_path, template_name), "r").read())
         return t.render({"model_name": model_name})
+
+    def generate(self):
+        templates = [f for f in listdir(self.templates_path) if isfile(join(self.templates_path, f))]
+        for model_name in self.get_model_names():
+            for template_name in templates:
+                open("../out/%s%s.java" % (model_name, template_name.split(".")[-2]), "w").write(
+                    self.render_template(model_name, template_name))
 
 
 if __name__ == "__main__":
@@ -36,4 +43,4 @@ if __name__ == "__main__":
 
     generator = Generator(base_package, model_package_path, dao_package_path, service_package_path, templates_path)
 
-    print generator.get_model_names()
+    generator.generate()
