@@ -1,0 +1,20 @@
+package com.lukaklacar.recenzija.dao.{{ model_name.lower() }};
+
+import com.lukaklacar.recenzija.model.{{ model_name }};
+import java.util.List;
+
+
+import java.util.List;
+
+public interface {{ model_name }}Dao {
+
+    {{ model_name }} get(int id);
+
+    {{ model_name }} save({{ model_name }} {{ model_name.lower() }});
+
+
+    List<{{ model_name }}> all();
+
+    public void delete({{ model_name }} employee);
+
+}

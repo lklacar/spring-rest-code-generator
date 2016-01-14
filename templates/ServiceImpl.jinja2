@@ -1,0 +1,36 @@
+package com.lukaklacar.recenzija.service.{{ model_name.lower() }};
+
+import com.lukaklacar.recenzija.dao.{{ model_name.lower() }}.{{ model_name }}Dao;
+import com.lukaklacar.recenzija.model.{{ model_name }};
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service("{{ model_name.lower() }}Service")
+@Transactional
+public class {{ model_name }}ServiceImpl implements {{ model_name }}Service {
+
+    @Autowired
+    private {{ model_name }}Dao dao;
+
+    public {{ model_name }} get(int id) {
+        return dao.get(id);
+    }
+
+    public void save({{ model_name }} {{ model_name.lower() }}) {
+        dao.save({{ model_name.lower() }});
+    }
+
+    public void update({{ model_name }} {{ model_name.lower() }}) {
+
+    }
+
+
+    public List<{{ model_name }}> all() {
+        return dao.all();
+    }
+
+
+}
